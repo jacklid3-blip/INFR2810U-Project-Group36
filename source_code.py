@@ -71,6 +71,8 @@ def select_product(product_price):
         window.after(2000, lambda: (
             label_output.configure(text=f"Product dispensed! Enjoy! Your change is ${change:.2f}", fg=ACCENT, bg=OUTPUT_BG),
         ))
+        entry_money.delete(0, 'end')
+        entry_money.insert(0, f"{change:.2f}")
     except ValueError:
         label_output.configure(text="Error: please insert money first.",
                                fg="#b30000", bg="#ffe6e6")
