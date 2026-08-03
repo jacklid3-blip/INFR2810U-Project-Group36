@@ -1,8 +1,8 @@
 # Sujood Izhar 8/3/26
 State | Description
 
-**Idle** | Waits for a customer to begin a transaction
-**Money_Entry** | Accepts and validates the customer's money
+Idle | Waits for a customer to begin a transaction
+Money_Entry | Accepts and validates the customer's money
 **Product_Selection** | Wait for customer to select product in the order for letter then number (A1,A2 or A3)
 **Check_Inventory**| Checks if the selected product is in stock
 **Out_of_Stock** | Displays an out of stock message 
