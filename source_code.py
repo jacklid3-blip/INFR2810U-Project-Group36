@@ -67,15 +67,16 @@ def select_product(product_price):
                                    fg="#b30000", bg="#ffe6e6")
             return
         change = money - product_price
-        label_output.configure(text=f"Product selected! Your change is ${change:.2f}.",
-                               fg=ACCENT, bg=OUTPUT_BG)
+        dispence_product()  
     except ValueError:
         label_output.configure(text="Error: please insert money first.",
                                fg="#b30000", bg="#ffe6e6")
 
 def dispence_product():
     label_output.configure(text="Dispensing product...", fg=ACCENT, bg=OUTPUT_BG)
-    window.after(2000, lambda: label_output.configure(text="Product dispensed! Enjoy!", fg=ACCENT, bg=OUTPUT_BG))
+    window.after(2000, lambda: (
+        label_output.configure(text="Product dispensed! Enjoy! Your change is ${change:.2f}", fg=ACCENT, bg=OUTPUT_BG),
+    ))
 
 button_frame = Frame(window, bg=COLOR_BG)
 button_frame.pack(pady=10)
@@ -91,6 +92,10 @@ button_coke.grid(row=0, column=1, padx=5)
 button_water = Button(button_frame, text="Water ($0.75)", command=lambda: select_product(0.75),
                       bg=ACCENT, fg=BUTTON_FG)
 button_water.grid(row=0, column=2, padx=5)
+
+button_snack = Button(button_frame, text="Snack ($2.00)", command=lambda: select_product(2.00),
+                      bg=ACCENT, fg=BUTTON_FG)
+button_snack.grid(row=0, column=3, padx=5)
 
 label_output = Label(window, text="Please insert money to begin.", bg=OUTPUT_BG, fg=ACCENT,
                      wraplength=400, justify=CENTER)
