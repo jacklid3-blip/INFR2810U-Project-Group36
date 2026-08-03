@@ -67,16 +67,13 @@ def select_product(product_price):
                                    fg="#b30000", bg="#ffe6e6")
             return
         change = money - product_price
-        dispence_product()  
+        label_output.configure(text="Dispensing product...", fg=ACCENT, bg=OUTPUT_BG)
+        window.after(2000, lambda: (
+            label_output.configure(text=f"Product dispensed! Enjoy! Your change is ${change:.2f}", fg=ACCENT, bg=OUTPUT_BG),
+        ))
     except ValueError:
         label_output.configure(text="Error: please insert money first.",
                                fg="#b30000", bg="#ffe6e6")
-
-def dispence_product():
-    label_output.configure(text="Dispensing product...", fg=ACCENT, bg=OUTPUT_BG)
-    window.after(2000, lambda: (
-        label_output.configure(text="Product dispensed! Enjoy! Your change is ${change:.2f}", fg=ACCENT, bg=OUTPUT_BG),
-    ))
 
 button_frame = Frame(window, bg=COLOR_BG)
 button_frame.pack(pady=10)
