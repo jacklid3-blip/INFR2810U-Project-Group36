@@ -43,21 +43,13 @@ label_money.pack(pady=5)
 entry_money = Entry(window, bg=ENTRY_BG, fg=ACCENT, font=("Arial", 12))
 entry_money.pack(pady=5)
 
-def entry_money_func():
+def entry_purchase_item():
     try:
         money = float(entry_money.get())
-        if money < 0.25 or money > 20.00:
-            label_output.configure(text="Error: money must be between $0.25 and $20.00.",
-                                   fg="#b30000", bg="#ffe6e6")
-            entry_money.focus()
-            return
-        else:
-            label_output.configure(text=f"You have inserted ${money:.2f}. Please select a product.",
-                                   fg=ACCENT, bg=OUTPUT_BG)
+        label_output.configure(text=f"Money inserted: ${money:.2f}. Please select a product.", fg=ACCENT, bg=OUTPUT_BG)
     except ValueError:
-        label_output.configure(text="Error: please enter a valid amount of money.",
+        label_output.configure(text="Error: please insert money first.",
                                fg="#b30000", bg="#ffe6e6")
-        entry_money.focus()
 
 def select_product(product_price):
     try:
@@ -80,7 +72,7 @@ def select_product(product_price):
 button_frame = Frame(window, bg=COLOR_BG)
 button_frame.pack(pady=10)
 
-button_confirm = Button(button_frame, text="Confirm Money", command=entry_money_func, 
+button_confirm = Button(button_frame, text="Confirm Money", command=entry_purchase_item, 
                         bg=BUTTON_CALC_BG, fg=BUTTON_FG)
 button_confirm.grid(row=5, column=0, padx=5)
 
