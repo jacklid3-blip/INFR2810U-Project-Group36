@@ -7,9 +7,9 @@
 from tkinter import Tk, Label, Entry, Frame, Button, BOTH, CENTER
 
 WINDOW_WIDTH = 425
-WINDOW_HEIGHT = 225
+WINDOW_HEIGHT = 400
 WINDOW_MIN_WIDTH = 425
-WINDOW_MIN_HEIGHT = 225
+WINDOW_MIN_HEIGHT = 400
 
 # Color palette
 COLOR_BG = "#e6f7ff"       # light blue background
@@ -82,23 +82,23 @@ button_frame.pack(pady=10)
 
 button_confirm = Button(button_frame, text="Confirm Money", command=entry_money_func, 
                         bg=BUTTON_CALC_BG, fg=BUTTON_FG)
-button_confirm.grid(row=0, column=0, padx=5)
+button_confirm.grid(row=5, column=0, padx=5)
 
 button_coke = Button(button_frame, text="Coke ($1.50)", command=lambda: select_product(1.50),
                      bg=ACCENT, fg=BUTTON_FG)
-button_coke.grid(row=0, column=1, padx=5)
+button_coke.grid(row=1, column=1, padx=5)
 
 button_water = Button(button_frame, text="Water ($0.75)", command=lambda: select_product(0.75),
                       bg=ACCENT, fg=BUTTON_FG)
-button_water.grid(row=0, column=2, padx=5)
+button_water.grid(row=2, column=1, padx=5)
 
 button_snack = Button(button_frame, text="Chocolate bar($2.00)", command=lambda: select_product(2.00),
                       bg=ACCENT, fg=BUTTON_FG)
-button_snack.grid(row=0, column=3, padx=5)
+button_snack.grid(row=3, column=1, padx=5)
 
 button_chips = Button(button_frame, text="Chips ($1.25)", command=lambda: select_product(1.25),
                       bg=ACCENT, fg=BUTTON_FG)
-button_chips.grid(row=0, column=3, padx=5)
+button_chips.grid(row=4, column=1, padx=5)
 
 label_output = Label(window, text="Please insert money to begin.", bg=OUTPUT_BG, fg=ACCENT,
                      wraplength=400, justify=CENTER)
