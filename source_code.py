@@ -92,9 +92,13 @@ button_water = Button(button_frame, text="Water ($0.75)", command=lambda: select
                       bg=ACCENT, fg=BUTTON_FG)
 button_water.grid(row=0, column=2, padx=5)
 
-button_snack = Button(button_frame, text="Snack ($2.00)", command=lambda: select_product(2.00),
+button_snack = Button(button_frame, text="Chocolate bar($2.00)", command=lambda: select_product(2.00),
                       bg=ACCENT, fg=BUTTON_FG)
 button_snack.grid(row=0, column=3, padx=5)
+
+button_chips = Button(button_frame, text="Chips ($1.25)", command=lambda: select_product(1.25),
+                      bg=ACCENT, fg=BUTTON_FG)
+button_chips.grid(row=0, column=3, padx=5)
 
 label_output = Label(window, text="Please insert money to begin.", bg=OUTPUT_BG, fg=ACCENT,
                      wraplength=400, justify=CENTER)
