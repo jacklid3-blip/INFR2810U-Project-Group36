@@ -4,12 +4,12 @@
 # This program uses code to show how a vending machine works. 
 # It will take in a user input of money and then allow the user to select a product. 
 # The program will then calculate the change and display it to the user.
-from tkinter import Tk, Label, Entry, Frame, Button, BOTH, CENTER
+from tkinter import Tk, Label, Entry, Frame, Button, StringVar, BOTH, CENTER
 
 WINDOW_WIDTH = 425
-WINDOW_HEIGHT = 450
+WINDOW_HEIGHT = 520
 WINDOW_MIN_WIDTH = 425
-WINDOW_MIN_HEIGHT = 450
+WINDOW_MIN_HEIGHT = 520
 
 # Color palette
 COLOR_BG = "#e6f7ff"       # light blue background
@@ -51,34 +51,46 @@ entry_money = Entry(window, bg=ENTRY_BG, fg=ACCENT, font=("Arial", 12))
 entry_money.pack(pady=5)
 
 selected_letter = ""
+balance = 0.0
 
 def entry_purchase_item():
+    global balance
     try:
-        money = float(entry_money.get())
-        label_output.configure(text=f"Money inserted: ${money:.2f}. Please select a product.", fg=ACCENT, bg=OUTPUT_BG)
+        amount = float(entry_money.get())
     except ValueError:
-        label_output.configure(text="Error: please insert money first.",
+        label_output.configure(text="Error: enter a valid amount.",
                                fg="#b30000", bg="#ffe6e6")
+        return
+    if amount <= 0:
+        label_output.configure(text="Error: amount must be greater than $0.00.",
+                               fg="#b30000", bg="#ffe6e6")
+        return
+    balance += amount
+    label_balance.configure(text=f"Balance: ${balance:.2f}")
+    entry_money.delete(0, 'end')
+    label_output.configure(text=f"${amount:.2f} inserted. Balance: ${balance:.2f}.", fg=ACCENT, bg=OUTPUT_BG)
 
 def select_product(code, name, price):
-    try:
-        money = float(entry_money.get())
-        if money < price:
-            label_output.configure(text=f"Error: insufficient funds. {name} costs ${price:.2f}.",
-                                   fg="#b30000", bg="#ffe6e6")
-            return
-        change = money - price
-        label_output.configure(text="Dispensing product...", fg=ACCENT, bg=OUTPUT_BG)
-        window.after(2000, lambda: (
-            label_output.configure(text=f"Product dispensed! Enjoy your {name}! Your change is ${change:.2f}", fg=ACCENT, bg=OUTPUT_BG),
-        ))
-        entry_money.delete(0, 'end')
-        entry_money.insert(0, f"{change:.2f}")
-        label_code.configure(text="--")
-    except ValueError:
+    global balance
+    if balance <= 0:
         label_output.configure(text="Error: please insert money first.",
                                fg="#b30000", bg="#ffe6e6")
         label_code.configure(text="--")
+        return
+    if balance < price:
+        label_output.configure(text=f"Error: insufficient funds. {name} costs ${price:.2f}.",
+                               fg="#b30000", bg="#ffe6e6")
+        label_code.configure(text="--")
+        return
+    change = balance - price
+    balance = 0.0
+    label_balance.configure(text="Balance: $0.00")
+    change_var.set(f"${change:.2f}")
+    label_output.configure(text="Dispensing product...", fg=ACCENT, bg=OUTPUT_BG)
+    window.after(2000, lambda: (
+        label_output.configure(text=f"Product dispensed! Enjoy your {name}!", fg=ACCENT, bg=OUTPUT_BG),
+    ))
+    label_code.configure(text="--")
 
 def press_letter(letter):
     global selected_letter
@@ -100,6 +112,17 @@ def press_number(number):
     else:
         label_output.configure(text=f"Invalid selection: {code}",
                                fg="#b30000", bg="#ffe6e6")
+
+frame_insert = Frame(window, bg=COLOR_BG)
+frame_insert.pack(pady=3)
+
+button_confirm = Button(frame_insert, text="Insert Money", command=entry_purchase_item,
+                        bg=BUTTON_CALC_BG, fg=BUTTON_FG)
+button_confirm.grid(row=0, column=0, padx=5)
+
+label_balance = Label(frame_insert, text="Balance: $0.00", bg=ENTRY_BG, fg=ACCENT,
+                      font=("Arial", 11), relief="sunken", width=14)
+label_balance.grid(row=0, column=1, padx=5)
 
 button_frame = Frame(window, bg=COLOR_BG)
 button_frame.pack(pady=5)
@@ -130,14 +153,19 @@ button_2 = Button(button_frame, text="2", width=4, command=lambda: press_number(
                   bg=ACCENT, fg=BUTTON_FG, font=("Arial", 12, "bold"))
 button_2.grid(row=6, column=1, padx=5, pady=3)
 
-button_confirm = Button(button_frame, text="Insert Money", command=entry_purchase_item,
-                        bg=BUTTON_CALC_BG, fg=BUTTON_FG)
-button_confirm.grid(row=7, column=0, padx=5, pady=5)
-
 # Displays current code being entered (e.g. "A_" then "A1")
 label_code = Label(button_frame, text="--", bg=ENTRY_BG, fg=ACCENT,
                    font=("Arial", 14, "bold"), width=4, relief="sunken")
-label_code.grid(row=7, column=1, padx=5, pady=5)
+label_code.grid(row=7, column=0, columnspan=2, pady=5)
+
+frame_change = Frame(window, bg=COLOR_BG)
+frame_change.pack(pady=3)
+
+Label(frame_change, text="Change:", bg=COLOR_BG, fg=ACCENT).grid(row=0, column=0, padx=5)
+change_var = StringVar(value="$0.00")
+entry_change = Entry(frame_change, textvariable=change_var, state="readonly",
+                     bg=ENTRY_BG, fg=ACCENT, font=("Arial", 11), width=10)
+entry_change.grid(row=0, column=1, padx=5)
 
 label_output = Label(window, text="Please insert money to begin.", bg=OUTPUT_BG, fg=ACCENT,
                      wraplength=400, justify=CENTER)
