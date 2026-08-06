@@ -6,10 +6,10 @@
 # The program will then calculate the change and display it to the user.
 from tkinter import Tk, Label, Entry, Frame, Button, StringVar, BOTH, CENTER
 
-WINDOW_WIDTH = 300
-WINDOW_HEIGHT = 420
-WINDOW_MIN_WIDTH = 300
-WINDOW_MIN_HEIGHT = 420
+WINDOW_WIDTH = 350
+WINDOW_HEIGHT = 475
+WINDOW_MIN_WIDTH = 350
+WINDOW_MIN_HEIGHT = 475
 
 # Color palette
 COLOR_BG = "#e6f7ff"       # light blue background
@@ -29,10 +29,17 @@ OUT_BG_OVER = "#ffe5b4"    # peach/light orange
 OUT_BG_OBESE = "#f8d7da"   # light red/pink
 
 PRODUCTS = {
-    "A1": ("Coke", 1.50),
+    "A1": ("Soda", 1.50),
     "A2": ("Water", 0.75),
-    "B1": ("Chocolate bar", 2.00),
-    "B2": ("Chips", 1.25),
+    "B1": ("Candy", 2.00),
+    "B2": ("Pretzels", 1.25),
+}
+INITIAL_STOCK = 10
+PRODUCT_ICONS = {
+    "A1": "🥤",
+    "A2": "💧",
+    "B1": "🍬",
+    "B2": "🥨",
 }
 
 window = Tk()
@@ -52,6 +59,8 @@ entry_money.pack(pady=5)
 
 selected_letter = ""
 balance = 0.0
+inventory = {code: INITIAL_STOCK for code in PRODUCTS}
+stock_labels = {}
 
 def entry_purchase_item():
     global balance
@@ -70,8 +79,24 @@ def entry_purchase_item():
     entry_money.delete(0, 'end')
     label_output.configure(text=f"${amount:.2f} inserted. Balance: ${balance:.2f}.", fg=ACCENT, bg=OUTPUT_BG)
 
+def format_stock_display(code):
+    stock = inventory[code]
+    icon = PRODUCT_ICONS[code]
+    return f"{icon * stock} ({stock} left)"
+
+
+def update_stock_display():
+    for code, label in stock_labels.items():
+        label.configure(text=f"{PRODUCTS[code][0]}: {format_stock_display(code)}")
+
+
 def select_product(code, name, price):
     global balance
+    if inventory[code] <= 0:
+        label_output.configure(text=f"{code}: {name} is sold out.",
+                               fg="#b30000", bg="#ffe6e6")
+        label_code.configure(text="--")
+        return
     if balance <= 0:
         label_output.configure(text=f"{code}: {name} - ${price:.2f}",
                                fg=ACCENT, bg=OUTPUT_BG)
@@ -84,6 +109,8 @@ def select_product(code, name, price):
         return
     change = balance - price
     balance = 0.0
+    inventory[code] -= 1
+    update_stock_display()
     label_balance.configure(text="Balance: $0.00")
     change_var.set(f"${change:.2f}")
     label_output.configure(text="Dispensing product...", fg=ACCENT, bg=OUTPUT_BG)
@@ -123,6 +150,17 @@ button_confirm.grid(row=0, column=0, padx=5)
 label_balance = Label(frame_insert, text="Balance: $0.00", bg=ENTRY_BG, fg=ACCENT,
                       font=("Arial", 11), relief="sunken", width=14)
 label_balance.grid(row=0, column=1, padx=5)
+
+stock_frame = Frame(window, bg=COLOR_BG)
+stock_frame.pack(pady=5)
+Label(stock_frame, text="Stock left", bg=COLOR_BG, fg=ACCENT,
+      font=("Arial", 11, "bold")).pack()
+
+for code, (name, price) in PRODUCTS.items():
+    label_stock = Label(stock_frame, text=f"{name}: {format_stock_display(code)}",
+                        bg=COLOR_BG, fg=ACCENT, justify=CENTER, wraplength=260)
+    label_stock.pack(pady=2)
+    stock_labels[code] = label_stock
 
 button_frame = Frame(window, bg=COLOR_BG)
 button_frame.pack(pady=5)
