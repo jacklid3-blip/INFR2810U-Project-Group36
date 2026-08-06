@@ -6,10 +6,10 @@
 # The program will then calculate the change and display it to the user.
 from tkinter import Tk, Label, Entry, Frame, Button, StringVar, BOTH, CENTER
 
-WINDOW_WIDTH = 425
-WINDOW_HEIGHT = 520
-WINDOW_MIN_WIDTH = 425
-WINDOW_MIN_HEIGHT = 520
+WINDOW_WIDTH = 300
+WINDOW_HEIGHT = 420
+WINDOW_MIN_WIDTH = 300
+WINDOW_MIN_HEIGHT = 420
 
 # Color palette
 COLOR_BG = "#e6f7ff"       # light blue background
@@ -73,8 +73,8 @@ def entry_purchase_item():
 def select_product(code, name, price):
     global balance
     if balance <= 0:
-        label_output.configure(text="Error: please insert money first.",
-                               fg="#b30000", bg="#ffe6e6")
+        label_output.configure(text=f"{code}: {name} - ${price:.2f}",
+                               fg=ACCENT, bg=OUTPUT_BG)
         label_code.configure(text="--")
         return
     if balance < price:
@@ -127,36 +127,28 @@ label_balance.grid(row=0, column=1, padx=5)
 button_frame = Frame(window, bg=COLOR_BG)
 button_frame.pack(pady=5)
 
-# Product listing
-Label(button_frame, text="A1: Coke              $1.50", bg=COLOR_BG, fg=ACCENT, anchor="w").grid(row=0, column=0, columnspan=2, sticky="w", padx=10)
-Label(button_frame, text="A2: Water             $0.75", bg=COLOR_BG, fg=ACCENT, anchor="w").grid(row=1, column=0, columnspan=2, sticky="w", padx=10)
-Label(button_frame, text="B1: Chocolate bar     $2.00", bg=COLOR_BG, fg=ACCENT, anchor="w").grid(row=2, column=0, columnspan=2, sticky="w", padx=10)
-Label(button_frame, text="B2: Chips             $1.25", bg=COLOR_BG, fg=ACCENT, anchor="w").grid(row=3, column=0, columnspan=2, sticky="w", padx=10)
-
-Label(button_frame, text="", bg=COLOR_BG).grid(row=4, column=0)
-
 # Letter selection buttons
 button_a = Button(button_frame, text="A", width=4, command=lambda: press_letter("A"),
                   bg=ACCENT, fg=BUTTON_FG, font=("Arial", 12, "bold"))
-button_a.grid(row=5, column=0, padx=5, pady=3)
+button_a.grid(row=0, column=0, padx=5, pady=3)
 
 button_b = Button(button_frame, text="B", width=4, command=lambda: press_letter("B"),
                   bg=ACCENT, fg=BUTTON_FG, font=("Arial", 12, "bold"))
-button_b.grid(row=5, column=1, padx=5, pady=3)
+button_b.grid(row=0, column=1, padx=5, pady=3)
 
 # Number selection buttons
 button_1 = Button(button_frame, text="1", width=4, command=lambda: press_number("1"),
                   bg=ACCENT, fg=BUTTON_FG, font=("Arial", 12, "bold"))
-button_1.grid(row=6, column=0, padx=5, pady=3)
+button_1.grid(row=1, column=0, padx=5, pady=3)
 
 button_2 = Button(button_frame, text="2", width=4, command=lambda: press_number("2"),
                   bg=ACCENT, fg=BUTTON_FG, font=("Arial", 12, "bold"))
-button_2.grid(row=6, column=1, padx=5, pady=3)
+button_2.grid(row=1, column=1, padx=5, pady=3)
 
 # Displays current code being entered (e.g. "A_" then "A1")
 label_code = Label(button_frame, text="--", bg=ENTRY_BG, fg=ACCENT,
                    font=("Arial", 14, "bold"), width=4, relief="sunken")
-label_code.grid(row=7, column=0, columnspan=2, pady=5)
+label_code.grid(row=2, column=0, columnspan=2, pady=5)
 
 frame_change = Frame(window, bg=COLOR_BG)
 frame_change.pack(pady=3)
