@@ -6,20 +6,27 @@
 # The program will then calculate the change and display it to the user.
 from tkinter import Tk, Label, Entry, Frame, Button, StringVar, BOTH, CENTER
 
-WINDOW_WIDTH = 350
-WINDOW_HEIGHT = 475
-WINDOW_MIN_WIDTH = 350
-WINDOW_MIN_HEIGHT = 475
+WINDOW_WIDTH = 420
+WINDOW_HEIGHT = 680
+WINDOW_MIN_WIDTH = 420
+WINDOW_MIN_HEIGHT = 680
 
 # Color palette
-COLOR_BG = "#e6f7ff"       # light blue background
-ACCENT = "#003366"         # dark blue for text
-ENTRY_BG = "#fffde6"       # light yellow for entries
-ENTRY_BORDER = "#99ccff"   # entry border highlight
-BUTTON_CALC_BG = "#28a745" # green
+COLOR_BG = "#eef2f7"       # window background
+PANEL_BG = "#ffffff"       # card-like panel background
+ACCENT = "#1f3a5f"         # primary text color
+MUTED = "#5b6d85"          # secondary text color
+ENTRY_BG = "#f8fafc"       # input background
+ENTRY_BORDER = "#c9d5e5"   # input border highlight
+BUTTON_CALC_BG = "#2f7d32" # green for insert action
 BUTTON_RESET_BG = "#dc3545"# red
 BUTTON_FG = "#ffffff"      # white text on buttons
-OUTPUT_BG = "#f0fbff"      # very light blue for output area
+OUTPUT_BG = "#f8fbff"      # output area background
+
+FONT_TITLE = ("Segoe UI", 16, "bold")
+FONT_HEADING = ("Segoe UI", 11, "bold")
+FONT_BODY = ("Segoe UI", 10)
+FONT_BUTTON = ("Segoe UI", 10, "bold")
 
 # Category background colors for output
 OUT_BG_SEVERE = "#cce5ff"  # light blue
@@ -46,16 +53,26 @@ window = Tk()
 
 window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
 window.minsize(WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT)
+window.resizable(False, False)
 
 window.title("Vending Machine")
 window.configure(bg=COLOR_BG)
 
-# Create GUI elements
-label_money = Label(window, text="Insert money ($):", bg=COLOR_BG, fg=ACCENT)
-label_money.pack(pady=5)
+Label(window, text="Vending Machine", bg=COLOR_BG, fg=ACCENT,
+    font=FONT_TITLE).pack(pady=(14, 4))
+Label(window, text="Insert money, choose a code, and collect change.",
+    bg=COLOR_BG, fg=MUTED, font=FONT_BODY).pack(pady=(0, 10))
 
-entry_money = Entry(window, bg=ENTRY_BG, fg=ACCENT, font=("Arial", 12))
-entry_money.pack(pady=5)
+# Create GUI elements
+label_money = Label(window, text="Insert money ($):", bg=COLOR_BG, fg=ACCENT,
+                    font=FONT_HEADING)
+label_money.pack(pady=(4, 4))
+
+entry_money = Entry(window, bg=ENTRY_BG, fg=ACCENT, font=("Segoe UI", 12),
+                    relief="solid", bd=1, highlightthickness=1,
+                    highlightbackground=ENTRY_BORDER, highlightcolor=ACCENT,
+                    justify="center")
+entry_money.pack(pady=(0, 8), ipadx=6, ipady=4)
 
 selected_letter = ""
 balance = 0.0
@@ -140,65 +157,85 @@ def press_number(number):
         label_output.configure(text=f"Invalid selection: {code}",
                                fg="#b30000", bg="#ffe6e6")
 
-frame_insert = Frame(window, bg=COLOR_BG)
-frame_insert.pack(pady=3)
+frame_insert = Frame(window, bg=PANEL_BG, bd=1, relief="solid")
+frame_insert.pack(pady=4, padx=18, fill="x")
 
 button_confirm = Button(frame_insert, text="Insert Money", command=entry_purchase_item,
-                        bg=BUTTON_CALC_BG, fg=BUTTON_FG)
-button_confirm.grid(row=0, column=0, padx=5)
+                bg=BUTTON_CALC_BG, fg=BUTTON_FG, font=FONT_BUTTON,
+                activebackground="#256628", activeforeground=BUTTON_FG,
+                relief="flat", cursor="hand2", padx=10, pady=6)
+button_confirm.grid(row=0, column=0, padx=8, pady=8)
 
 label_balance = Label(frame_insert, text="Balance: $0.00", bg=ENTRY_BG, fg=ACCENT,
-                      font=("Arial", 11), relief="sunken", width=14)
-label_balance.grid(row=0, column=1, padx=5)
+                font=("Segoe UI", 11, "bold"), relief="solid", bd=1,
+                width=14, padx=6, pady=4)
+label_balance.grid(row=0, column=1, padx=8, pady=8)
 
-stock_frame = Frame(window, bg=COLOR_BG)
-stock_frame.pack(pady=5)
-Label(stock_frame, text="Stock left", bg=COLOR_BG, fg=ACCENT,
-      font=("Arial", 11, "bold")).pack()
+stock_frame = Frame(window, bg=PANEL_BG, bd=1, relief="solid")
+stock_frame.pack(pady=6, padx=18, fill="x")
+Label(stock_frame, text="Stock", bg=PANEL_BG, fg=ACCENT,
+    font=FONT_HEADING).pack(pady=(8, 2))
 
 for code, (name, price) in PRODUCTS.items():
     label_stock = Label(stock_frame, text=f"{name}: {format_stock_display(code)}",
-                        bg=COLOR_BG, fg=ACCENT, justify=CENTER, wraplength=260)
+                bg=PANEL_BG, fg=ACCENT, justify=CENTER,
+                wraplength=320, font=FONT_BODY)
     label_stock.pack(pady=2)
     stock_labels[code] = label_stock
 
-button_frame = Frame(window, bg=COLOR_BG)
-button_frame.pack(pady=5)
+button_frame = Frame(window, bg=PANEL_BG, bd=1, relief="solid")
+button_frame.pack(pady=6, padx=18, fill="x")
+
+Label(button_frame, text="Select Product", bg=PANEL_BG, fg=ACCENT,
+    font=FONT_HEADING).grid(row=0, column=0, columnspan=2, pady=(8, 2))
 
 # Letter selection buttons
-button_a = Button(button_frame, text="A", width=4, command=lambda: press_letter("A"),
-                  bg=ACCENT, fg=BUTTON_FG, font=("Arial", 12, "bold"))
-button_a.grid(row=0, column=0, padx=5, pady=3)
+button_a = Button(button_frame, text="A", width=5, command=lambda: press_letter("A"),
+                  bg=ACCENT, fg=BUTTON_FG, font=("Segoe UI", 12, "bold"),
+                  activebackground="#2b4b77", activeforeground=BUTTON_FG,
+                  relief="flat", cursor="hand2")
+button_a.grid(row=1, column=0, padx=8, pady=4)
 
-button_b = Button(button_frame, text="B", width=4, command=lambda: press_letter("B"),
-                  bg=ACCENT, fg=BUTTON_FG, font=("Arial", 12, "bold"))
-button_b.grid(row=0, column=1, padx=5, pady=3)
+button_b = Button(button_frame, text="B", width=5, command=lambda: press_letter("B"),
+                  bg=ACCENT, fg=BUTTON_FG, font=("Segoe UI", 12, "bold"),
+                  activebackground="#2b4b77", activeforeground=BUTTON_FG,
+                  relief="flat", cursor="hand2")
+button_b.grid(row=1, column=1, padx=8, pady=4)
 
 # Number selection buttons
-button_1 = Button(button_frame, text="1", width=4, command=lambda: press_number("1"),
-                  bg=ACCENT, fg=BUTTON_FG, font=("Arial", 12, "bold"))
-button_1.grid(row=1, column=0, padx=5, pady=3)
+button_1 = Button(button_frame, text="1", width=5, command=lambda: press_number("1"),
+                  bg=ACCENT, fg=BUTTON_FG, font=("Segoe UI", 12, "bold"),
+                  activebackground="#2b4b77", activeforeground=BUTTON_FG,
+                  relief="flat", cursor="hand2")
+button_1.grid(row=2, column=0, padx=8, pady=4)
 
-button_2 = Button(button_frame, text="2", width=4, command=lambda: press_number("2"),
-                  bg=ACCENT, fg=BUTTON_FG, font=("Arial", 12, "bold"))
-button_2.grid(row=1, column=1, padx=5, pady=3)
+button_2 = Button(button_frame, text="2", width=5, command=lambda: press_number("2"),
+                  bg=ACCENT, fg=BUTTON_FG, font=("Segoe UI", 12, "bold"),
+                  activebackground="#2b4b77", activeforeground=BUTTON_FG,
+                  relief="flat", cursor="hand2")
+button_2.grid(row=2, column=1, padx=8, pady=4)
 
 # Displays current code being entered (e.g. "A_" then "A1")
 label_code = Label(button_frame, text="--", bg=ENTRY_BG, fg=ACCENT,
-                   font=("Arial", 14, "bold"), width=4, relief="sunken")
-label_code.grid(row=2, column=0, columnspan=2, pady=5)
+             font=("Segoe UI", 14, "bold"), width=6,
+             relief="solid", bd=1, pady=2)
+label_code.grid(row=3, column=0, columnspan=2, pady=(6, 10))
 
-frame_change = Frame(window, bg=COLOR_BG)
-frame_change.pack(pady=3)
+frame_change = Frame(window, bg=PANEL_BG, bd=1, relief="solid")
+frame_change.pack(pady=6, padx=18, fill="x")
 
-Label(frame_change, text="Change:", bg=COLOR_BG, fg=ACCENT).grid(row=0, column=0, padx=5)
+Label(frame_change, text="Change:", bg=PANEL_BG, fg=ACCENT,
+    font=FONT_HEADING).grid(row=0, column=0, padx=8, pady=8)
 change_var = StringVar(value="$0.00")
 entry_change = Entry(frame_change, textvariable=change_var, state="readonly",
-                     bg=ENTRY_BG, fg=ACCENT, font=("Arial", 11), width=10)
-entry_change.grid(row=0, column=1, padx=5)
+               bg=ENTRY_BG, fg=ACCENT, font=("Segoe UI", 11, "bold"),
+               width=10, relief="solid", bd=1, readonlybackground=ENTRY_BG,
+               justify="center")
+entry_change.grid(row=0, column=1, padx=8, pady=8)
 
 label_output = Label(window, text="Please insert money to begin.", bg=OUTPUT_BG, fg=ACCENT,
-                     wraplength=400, justify=CENTER)
-label_output.pack(pady=10, fill=BOTH, expand=True)
+               wraplength=360, justify=CENTER, font=FONT_BODY,
+               relief="solid", bd=1, padx=12, pady=12)
+label_output.pack(pady=(8, 14), padx=18, fill=BOTH, expand=True)
 
 window.mainloop()
