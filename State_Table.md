@@ -29,11 +29,15 @@ State | Description
 
 -------------------------------------------------------------------------------------------
 
-Idle --> Customer starts transaction--> display product buttons --> Product_Selection
+Idle --> Customer starts transaction--> display product buttons --> Money_Entry
 
-Money_Entry--> Valid money entered --> Add the amount to the current balaance--> Check_Payment
+Money_Entry--> Valid money entered --> Add the amount to the current balance--> Product_Selection
 
-Money_Entry--->Invalid money is entered--> Display an invalid money message --> Error
+Money_Entry--->Non numeric amount--> Display an invalid money message --> Money Entry
+
+Money_Entry--->Amount < $0.25--> Display an invalid money message --> Money Entry
+
+Money_Entry--->Amount > $20.00--> Display an invalid money message --> Money Entry
 
 Check_Payment--> Balance is less than product price --> Display remaining  amount required --> Insufficient_Funds
 
@@ -41,21 +45,17 @@ Check_Payment--> Balance equals product price --> Approve the purchase --> Dispe
 
 Check_Payment--> Balance is greater than product price-->  Calculate the change and approve the purchase --> Return_Change, Dispensing
 
-Insufficient_Funds--> Customer adds more money --> Add money to the current balance --> Check_Payment
-
-Insufficient_Funds--> customer cancels--> return inserted money --> Reset
-
 Product_Selection --> A1 is pressed --> Store Soda as the selected product --> Check_Inventory
 
 Product_Selection--> A2 is pressed--> store Water as the selected product --> Check_Inventory
 
 Product_Selection--> B1 is pressed--> store Candy as the selected product --> Check_Inventory
 
-Product_Selection--> B2 is pressed--> store Pretzal as the selected product --> Check_Inventory
+Product_Selection--> B2 is pressed--> store Pretzel as the selected product --> Check_Inventory
 
 Product_Selection --> Invalid product input--> display an invalid selection message --> Error
 
-Check_Inventory--> Selected product is greater than 0 --> Display the product price and payment instructions --> Money_Entry
+Check_Inventory--> Selected product > 0 --> Compare current balance to the product price--> Check_Payment
 
 Check_Inventory--> Selected product stock equal 0 --> display an out of stock message--> Out_Of_Stock
 
