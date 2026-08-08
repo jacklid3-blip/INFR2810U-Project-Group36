@@ -14,7 +14,7 @@ Syed Sujood Izhar (100787918)
 
   This project is to show how a vending machine works via the Python and circuit diagram. 
 
-  This controller simulates the operation of a vending machine by accepting currency from the operator, validating the amount, allowing the user to select a product and calculating any change. To run the project you must enter money amount between $0.25   and $20.00, then confirming the amount. After confirming, the amount the vending machine will check product inventory, dispense the product of choice and, return change if its due, update inventory or let the users know if they have fallen short at       any step. 
+  This controller simulates the operation of a vending machine by accepting currency from the operator, validating the amount, allowing the user to select a product and calculating any change. To run the project the customer must enter a dollar amount     between $0.25 and $20.00, then they must confirm the amount. After confirming, the amount the vending machine will check the products inventory, then dispense the product of choice, return any change that its due, update inventory or let the users       know if they have fallen short at any step. 
 
   The program uses Tkinter to create a GUI with buttons and boxes which allows for a more user friendly interface. 
 
