@@ -106,8 +106,11 @@ Reset --> Transaction information is cleared--> Reset balance and selected produ
 |Product Dispensed | Change Required | Controller Output | Next State |
 
 | 0 | 0 | Wait for dispensing | Dispensing |
+
 | 0 | 1 | Wait for dispensing | Dispensing |
+
 | 1 | 0 | Reduce inventory by 1 | Reset |
+
 | 1 | 1 | Reduced inventory by 1 | Return Change | 
 
 
