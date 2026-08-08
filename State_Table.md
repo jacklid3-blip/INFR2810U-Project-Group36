@@ -7,7 +7,7 @@ State | Description
 
 **Money_Entry** | Accepts and validates the customer's money
 
-**Product_Selection** | Wait for customer to select product in the order for letter then number (A1,A2 or A3)
+**Product_Selection** | Wait for customer to select product in the order for letter then number (A1,A2,A3, A4)
 
 **Check_Inventory**| Checks if the selected product is in stock
 
@@ -75,11 +75,42 @@ Reset --> Transaction information is cleared--> Reset balance and selected produ
 
 -------------------------------------------------------------------------------------------
 
-**Truth Table**
+**Truth Tables**
 
-1.Product Select
+1.Product Selection
 
 | Valid Selection| Stock Available | Controller Output | Next State |
-| 0 | 0 | Display "Invalid Selection" | Product Selection|
+
+| 0 | 0 | Display "Invalid Selection" | Product Selection |
+
+| 0 | 1 | Display "Invalid Selection" | Product Selection| 
+
+| 1 | 0 | Display "Out of Stock" | Product Selection |
+
+| 1 | 1 | Display product price | Money Entry |
+
+2. Payment Logic
+
+| Valid Money | Balance < Price | Balance = Price | Balance > Price | Controller Output | Next State |
+
+| 0 | 0 | 0 | 0 | Display " Invalid Money" | Money Entry |
+
+| 1 | 1 | 0 | 0 | Display amount still required | Money Entry |
+
+| 1 | 0 | 1 | 0 | Approve purchase, no change required | Dispensing |
+
+| 1 | 0 | 0 | 1 | Approve purchase and calculate change | Return Change, Dispensing |
+
+3. Dispensing & Completion
+
+|Product Dispensed | Change Required | Controller Output | Next State |
+
+| 0 | 0 | Wait for dispensing | Dispensing |
+| 0 | 1 | Wait for dispensing | Dispensing |
+| 1 | 0 | Reduce inventory by 1 | Reset |
+| 1 | 1 | Reduced inventory by 1 | Return Change | 
+
+
+
 
 
