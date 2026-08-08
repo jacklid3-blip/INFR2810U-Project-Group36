@@ -73,6 +73,13 @@ Error --> Error occurred during money entry --> Display payment instruction agai
 
 Reset --> Transaction information is cleared--> Reset balance and selected product --> Idle
 
+-------------------------------------------------------------------------------------------
 
+**Truth Table**
+
+1.Product Select
+
+| Valid Selection| Stock Available | Controller Output | Next State |
+| 0 | 0 | Display "Invalid Selection" | Product Selection|
 
 
