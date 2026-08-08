@@ -12,25 +12,25 @@ Syed Sujood Izhar (100787918)
 
 **Overview of Project:**
 
-This project is to show how a vending machine works via the Python and circuit diagram. 
+  This project is to show how a vending machine works via the Python and circuit diagram. 
 
-This controller simulates the operation of a vending machine by accepting currency from the operator, validating the amount, allowing the user to select a product and calculating any change. To run the project you must enter money amount between $0.25 and $20.00, then confirming the amount. After confirming, the amount the vending machine will check product inventory, dispense the product of choice and, return change if its due, update inventory or let the users know if they have fallen short at any step. 
+  This controller simulates the operation of a vending machine by accepting currency from the operator, validating the amount, allowing the user to select a product and calculating any change. To run the project you must enter money amount between $0.25   and $20.00, then confirming the amount. After confirming, the amount the vending machine will check product inventory, dispense the product of choice and, return change if its due, update inventory or let the users know if they have fallen short at       any step. 
 
-The program uses Tkinter to create a GUI with buttons and boxes which allows for a more user friendly interface. 
+  The program uses Tkinter to create a GUI with buttons and boxes which allows for a more user friendly interface. 
 
 **Products**
 
-The vending machine contains 4 main products:
+  The vending machine contains 4 main products:
 
-A1 |   Soda   | $1.50
+          A1 |   Soda   | $1.50
 
-A2 |  Water   | $0.75
+          A2 |  Water   | $0.75
 
-B1 |  Candy   | $2.00
+          B1 |  Candy   | $2.00
 
-B2 | Pretzels | $1.25
+          B2 | Pretzels | $1.25
 
-Each product starting with a total inventory of 10 per product, and as sales are made the total inventory will decrease
+  Each product starting with a total inventory of 10 per product, and as sales are made the total inventory will decrease
 
 **How the Controller Works**
 
