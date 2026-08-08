@@ -87,8 +87,12 @@ def entry_purchase_item():
         label_output.configure(text="Error: enter a valid amount.",
                                fg="#b30000", bg="#ffe6e6")
         return
-    if amount <= 0:
-        label_output.configure(text="Error: amount must be greater than $0.00.",
+    if amount < 0.25:
+        label_output.configure(text="Error: minimum insertion is $0.25.",
+                               fg="#b30000", bg="#ffe6e6")
+        return
+    if amount > 20.00:
+        label_output.configure(text="Error: maximum insertion is $20.00.",
                                fg="#b30000", bg="#ffe6e6")
         return
     balance += amount
